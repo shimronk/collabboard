@@ -1,0 +1,277 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\BoardPage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\ pages\\BoardPage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\Home.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\ pages\\Home.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\App.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\App.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Board.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\Board.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Column.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\Column.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskCard.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\TaskCard.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Navbar.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\Navbar.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\data\\mockTasks.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\data\\mockTasks.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\component-tree.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docs\\component-tree.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\architecture.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docs\\architecture.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Button.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\Button.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskModal.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:client\\src\\components\\TaskModal.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "index.css",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\index.css",
+              "RelativeDocumentMoniker": "client\\src\\index.css",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\index.css",
+              "RelativeToolTip": "client\\src\\index.css",
+              "ViewState": "AgIAAF8BAAAAAAAAAAAAwHoBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-08-12T18:16:41.601Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.jsx",
+              "RelativeDocumentMoniker": "client\\src\\App.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.jsx",
+              "RelativeToolTip": "client\\src\\App.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:16:09.4Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "App.css",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.css",
+              "RelativeDocumentMoniker": "client\\src\\App.css",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\App.css",
+              "RelativeToolTip": "client\\src\\App.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-08-12T18:17:13.34Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BoardPage.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\BoardPage.jsx",
+              "RelativeDocumentMoniker": "client\\src\\ pages\\BoardPage.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\BoardPage.jsx",
+              "RelativeToolTip": "client\\src\\ pages\\BoardPage.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:08:33.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Home.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\Home.jsx",
+              "RelativeDocumentMoniker": "client\\src\\ pages\\Home.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\ pages\\Home.jsx",
+              "RelativeToolTip": "client\\src\\ pages\\Home.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:08:20.341Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Board.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Board.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\Board.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Board.jsx",
+              "RelativeToolTip": "client\\src\\components\\Board.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAQwBEAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:07:05.712Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Column.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Column.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\Column.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Column.jsx",
+              "RelativeToolTip": "client\\src\\components\\Column.jsx",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAzwBMAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:07:23.763Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TaskCard.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskCard.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\TaskCard.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskCard.jsx",
+              "RelativeToolTip": "client\\src\\components\\TaskCard.jsx",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAQwBMAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:07:38.098Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Navbar.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Navbar.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\Navbar.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Navbar.jsx",
+              "RelativeToolTip": "client\\src\\components\\Navbar.jsx",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAQwBEAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:06:30.745Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "mockTasks.js",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\data\\mockTasks.js",
+              "RelativeDocumentMoniker": "client\\src\\data\\mockTasks.js",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\data\\mockTasks.js",
+              "RelativeToolTip": "client\\src\\data\\mockTasks.js",
+              "ViewState": "AgIAADQAAAAAAAAAAAAQwDkAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-08-12T18:08:56.242Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-08-12T18:12:25.891Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "component-tree.md",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\component-tree.md",
+              "RelativeDocumentMoniker": "docs\\component-tree.md",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\component-tree.md",
+              "RelativeToolTip": "docs\\component-tree.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-08-12T18:10:42.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "architecture.md",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\architecture.md",
+              "RelativeDocumentMoniker": "docs\\architecture.md",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\docs\\architecture.md",
+              "RelativeToolTip": "docs\\architecture.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-08-12T18:10:16.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Button.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Button.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\Button.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\Button.jsx",
+              "RelativeToolTip": "client\\src\\components\\Button.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:08:04.972Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "TaskModal.jsx",
+              "DocumentMoniker": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskModal.jsx",
+              "RelativeDocumentMoniker": "client\\src\\components\\TaskModal.jsx",
+              "ToolTip": "C:\\Users\\Shimron Kavindu\\Desktop\\University\\CollabBoard\\client\\src\\components\\TaskModal.jsx",
+              "RelativeToolTip": "client\\src\\components\\TaskModal.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2026-08-12T18:07:51.877Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

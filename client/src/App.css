@@ -1,0 +1,649 @@
+.task-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-assignees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+}
+
+.assignee-chip {
+    padding: 5px 9px;
+    border-radius: 20px;
+    background: #f1f1f1;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.unassigned {
+    font-size: 12px;
+    color: #888;
+}
+/* =========================================================
+   COLLABBOARD - DARK NAVY / BLACK THEME
+========================================================= */
+
+:root {
+    --bg-primary: #070913;
+    --bg-secondary: #0d1020;
+    --bg-card: #111528;
+    --bg-card-hover: #161b32;
+
+    --text-primary: #f5f5f7;
+    --text-secondary: #9da3b8;
+
+    --pink: #ff3cac;
+    --purple: #784ba0;
+    --violet: #6a5cff;
+
+    --border-gradient:
+        linear-gradient(
+            135deg,
+            #ff3cac,
+            #784ba0,
+            #6a5cff
+        );
+}
+
+
+/* =========================================================
+   MAIN BACKGROUND
+========================================================= */
+
+html,
+body,
+#root {
+    min-height: 100%;
+    margin: 0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.app {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(120, 75, 160, 0.15),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom left,
+            rgba(255, 60, 172, 0.08),
+            transparent 35%
+        ),
+        #070913;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar {
+    background: #090b16 !important;
+    border-bottom: 1px solid rgba(255, 60, 172, 0.35);
+    border-radius: 0 !important;
+}
+
+.nav-link {
+    color: #a8aec3 !important;
+}
+
+.nav-link:hover {
+    color: white !important;
+}
+
+.nav-link.active {
+    color: #ff70bf !important;
+}
+
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page-content,
+.projects-page,
+.insights-page {
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.page-label {
+    color: #d45cff !important;
+}
+
+.page-subtitle {
+    color: var(--text-secondary) !important;
+}
+
+
+/* =========================================================
+   ALL MAIN RECTANGLES / CARDS
+========================================================= */
+
+.task-card,
+.board-column,
+.project-card,
+.member-insight-card,
+.stat-card,
+.dashboard-card,
+.profile-card,
+.team-card,
+.task-modal {
+    position: relative;
+    background: #101426 !important;
+    color: white !important;
+
+    /* SHARP EDGES */
+    border-radius: 3px !important;
+
+    /* Normal border fallback */
+    border: 1px solid rgba(181, 73, 255, 0.55);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   PINK / PURPLE GLOW ON HOVER
+========================================================= */
+
+.task-card:hover,
+.project-card:hover,
+.member-insight-card:hover,
+.stat-card:hover {
+    border-color: #ff3cac;
+
+    box-shadow:
+        0 0 0 1px rgba(255, 60, 172, 0.4),
+        0 0 20px rgba(120, 75, 160, 0.2),
+        0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+
+/* =========================================================
+   BOARD
+========================================================= */
+
+.board {
+    background: transparent !important;
+}
+
+.board-column {
+    background: #0b0f1e !important;
+    border-radius: 3px !important;
+}
+
+.column-header {
+    border-bottom: 1px solid rgba(120, 75, 160, 0.45);
+}
+
+.column-header h2 {
+    color: white;
+}
+
+.task-count {
+    background: linear-gradient(
+        135deg,
+        #ff3cac,
+        #784ba0
+    ) !important;
+
+    color: white !important;
+    border-radius: 3px !important;
+}
+
+
+/* =========================================================
+   TASK CARDS
+========================================================= */
+
+.task-card {
+    background: #12172a !important;
+    border-left: 2px solid #ff3cac;
+}
+
+.task-card h3 {
+    color: #ffffff !important;
+}
+
+.task-description {
+    color: #aeb4c8 !important;
+}
+
+
+/* =========================================================
+   ASSIGNEE
+========================================================= */
+
+.assignee-chip,
+.user-chip,
+.project-chip {
+    background: #171c31 !important;
+
+    color: #ef8cff !important;
+
+    border: 1px solid rgba(255, 60, 172, 0.5);
+
+    border-radius: 2px !important;
+}
+
+.unassigned {
+    color: #858ba0 !important;
+}
+
+
+/* =========================================================
+   PRIORITY
+========================================================= */
+
+.priority {
+    border-radius: 2px !important;
+    font-weight: 600;
+}
+
+.priority-high {
+    background: rgba(255, 60, 172, 0.15) !important;
+    color: #ff70bf !important;
+    border: 1px solid rgba(255, 60, 172, 0.5);
+}
+
+.priority-medium {
+    background: rgba(120, 75, 160, 0.15) !important;
+    color: #bd8cff !important;
+    border: 1px solid rgba(189, 140, 255, 0.5);
+}
+
+.priority-low {
+    background: rgba(100, 120, 255, 0.12) !important;
+    color: #8fa2ff !important;
+    border: 1px solid rgba(100, 120, 255, 0.4);
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button,
+.add-task-button,
+.primary-button,
+.secondary-button {
+    border-radius: 2px !important;
+}
+
+.add-task-button,
+.primary-button {
+    background: linear-gradient(
+        135deg,
+        #ff3cac,
+        #784ba0,
+        #6a5cff
+    ) !important;
+
+    color: white !important;
+
+    border: none !important;
+
+    box-shadow:
+        0 4px 15px rgba(255, 60, 172, 0.2);
+}
+
+.add-task-button:hover,
+.primary-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(255, 60, 172, 0.35);
+}
+
+.secondary-button {
+    background: #111528 !important;
+    color: #f2f2f7 !important;
+
+    border: 1px solid #784ba0 !important;
+}
+
+
+/* =========================================================
+   TASK MENU
+========================================================= */
+
+.task-menu-dropdown {
+    background: #171c31 !important;
+
+    border: 1px solid #784ba0 !important;
+
+    border-radius: 2px !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.task-menu-item {
+    color: white !important;
+}
+
+.task-menu-item:hover {
+    background: rgba(255, 60, 172, 0.1) !important;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.75) !important;
+}
+
+.task-modal {
+    background: #101426 !important;
+
+    border: 1px solid #784ba0 !important;
+
+    border-radius: 3px !important;
+
+    color: white !important;
+}
+
+.task-modal h2,
+.task-modal h3,
+.task-modal label {
+    color: white !important;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+input,
+textarea,
+select {
+    background: #090d1b !important;
+
+    color: white !important;
+
+    border: 1px solid #343952 !important;
+
+    border-radius: 2px !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+
+    border-color: #ff3cac !important;
+
+    box-shadow:
+        0 0 0 3px rgba(255, 60, 172, 0.12) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #6f768d !important;
+}
+
+
+/* =========================================================
+   DEADLINE
+========================================================= */
+
+.deadline-section {
+    background: #0b0f1e !important;
+
+    border: 1px solid rgba(120, 75, 160, 0.35);
+
+    border-radius: 2px !important;
+}
+
+.deadline-title {
+    color: #858ba0 !important;
+}
+
+.deadline-value {
+    color: #e6e7ee !important;
+}
+
+
+/* =========================================================
+   COMPLETED
+========================================================= */
+
+.completed-status {
+    background: rgba(120, 75, 160, 0.1);
+
+    border: 1px solid rgba(120, 75, 160, 0.4);
+
+    border-radius: 2px !important;
+}
+
+.completed-text {
+    color: #c99cff !important;
+}
+
+
+/* =========================================================
+   MEMBER INSIGHTS
+========================================================= */
+
+.member-avatar {
+    background: linear-gradient(
+        135deg,
+        #ff3cac,
+        #784ba0,
+        #6a5cff
+    ) !important;
+
+    border-radius: 3px !important;
+}
+
+.insight-stat {
+    background: #0b0f1e !important;
+
+    border: 1px solid rgba(120, 75, 160, 0.35);
+
+    border-radius: 2px !important;
+}
+
+.insight-stat span {
+    color: #8d94aa !important;
+}
+
+.insight-stat strong {
+    color: white !important;
+}
+
+.progress-bar {
+    background: #080b15 !important;
+    border-radius: 2px !important;
+}
+
+.progress-fill {
+    background: linear-gradient(
+        90deg,
+        #ff3cac,
+        #784ba0,
+        #6a5cff
+    ) !important;
+
+    border-radius: 2px !important;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #070913;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #784ba0;
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff3cac;
+}
+.selected-assignees {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.selected-assignees-label {
+    color: #9da3b8;
+    font-size: 12px;
+}
+
+.assignee-chip {
+    padding: 5px 9px;
+    border-radius: 3px;
+    background: #171c31;
+    color: #ef8cff;
+    border: 1px solid rgba(255, 60, 172, 0.5);
+    font-size: 11px;
+    font-weight: 600;
+}
+/* =========================================
+   FINAL COLLABBOARD THEME OVERRIDES
+   ========================================= */
+
+.home-content,
+.page-content {
+    background: transparent !important;
+    color: #f5f5f7 !important;
+}
+
+/* HOME */
+.home-features .feature-card {
+    background: #11182b !important;
+    border: 1px solid #7b3f91 !important;
+    border-radius: 3px !important;
+    color: #f5f5f7 !important;
+}
+
+.home-features .feature-card:hover {
+    border-color: #ff3cac !important;
+}
+
+.feature-card h3 {
+    color: #f5f5f7 !important;
+}
+
+.feature-card p {
+    color: #9da6bb !important;
+}
+
+.feature-icon {
+    color: #ff3cac !important;
+}
+
+.feature-number {
+    color: #a855f7 !important;
+}
+
+/* DASHBOARD */
+.dashboard-card,
+.dashboard-stat,
+.dashboard-section,
+.stat-card {
+    background: #11182b !important;
+    border: 1px solid #693b85 !important;
+    border-radius: 3px !important;
+}
+
+.dashboard-card:hover,
+.stat-card:hover {
+    border-color: #ff3cac !important;
+}
+
+/* TEAM */
+.team-card,
+.member-card,
+.team-member-card {
+    background: #11182b !important;
+    border: 1px solid #693b85 !important;
+    border-radius: 3px !important;
+}
+
+.team-card:hover,
+.member-card:hover,
+.team-member-card:hover {
+    border-color: #ff3cac !important;
+}
+
+/* PROFILE */
+.profile-card,
+.profile-section,
+.profile-container,
+.profile-panel {
+    background: #11182b !important;
+    border: 1px solid #693b85 !important;
+    border-radius: 3px !important;
+}
+
+.profile-card:hover {
+    border-color: #ff3cac !important;
+}
+
+/* ALL PAGE INPUTS */
+input,
+textarea,
+select {
+    background: #080d1b !important;
+    color: #f5f5f7 !important;
+    border: 1px solid #49305d !important;
+    border-radius: 3px !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #ff3cac !important;
+    outline: none !important;
+}
+
+/* ALL COMMON BUTTONS */
+button {
+    border-radius: 3px !important;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #080b16 !important;
+    border-bottom: 1px solid #693b85 !important;
+}
+
+/* MODALS */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.78) !important;
+}
+
+.modal-content,
+.modal,
+.profile-modal,
+.team-modal {
+    background: #0d1324 !important;
+    border: 1px solid #a855f7 !important;
+    border-radius: 4px !important;
+}
