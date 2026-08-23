@@ -6314,9 +6314,7 @@ p {
     object-fit: contain;
     opacity: 0.7;
 }
-/* =========================================================
-   TASK MODAL - ASSIGNEE CHECKBOX FIX
-========================================================= */
+  #TASK MODAL - ASSIGNEE CHECKBOX FIX
 
 .assignee-checkbox-list {
     width: 100%;
