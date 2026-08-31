@@ -1,0 +1,48 @@
+let tasks = [
+  {
+    id: 1,
+    title: "Design Login Page",
+    description: "Create the login page for CollabBoard.",
+    status: "todo",
+    priority: "high",
+    assigneeIds: [2],
+    deadline: "2026-08-28",
+    projectId: 1,
+    createdBy: 1,
+  },
+  {
+    id: 2,
+    title: "Create Dashboard",
+    description: "Build the main dashboard with task statistics.",
+    status: "doing",
+    priority: "high",
+    assigneeIds: [3],
+    deadline: "2026-08-30",
+    projectId: 1,
+    createdBy: 1,
+  },
+  {
+    id: 3,
+    title: "Database Research",
+    description: "Research the data requirements for the project.",
+    status: "done",
+    priority: "medium",
+    assigneeIds: [4],
+    deadline: "2026-08-31",
+    projectId: 1,
+    createdBy: 1,
+  },
+  {
+    id: 4,
+    title: "Team Page Design",
+    description: "Design the team management page.",
+    status: "todo",
+    priority: "medium",
+    assigneeIds: [5],
+    deadline: "2026-09-02",
+    projectId: 1,
+    createdBy: 1,
+  },
+];
+
+export default tasks;
