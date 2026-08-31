@@ -22,9 +22,7 @@ function DashboardPage({ tasks }) {
     });
 
 
-    /* =========================================================
-       TOGGLE CARD
-    ========================================================= */
+    /*  TOGGLE CARD*/
 
     const toggleCard = (cardName) => {
 
@@ -36,9 +34,7 @@ function DashboardPage({ tasks }) {
     };
 
 
-    /* =========================================================
-       ACTIVITY STATE
-    ========================================================= */
+    /* ACTIVITY STATE */
 
     const [activities, setActivities] = useState(() => {
 
@@ -53,9 +49,7 @@ function DashboardPage({ tasks }) {
     });
 
 
-    /* =========================================================
-       UPDATE ACTIVITIES WHEN BOARD CHANGES
-    ========================================================= */
+    /* UPDATE ACTIVITIES WHEN BOARD CHANGES*/
 
     useEffect(() => {
 
@@ -103,9 +97,7 @@ function DashboardPage({ tasks }) {
     }, []);
 
 
-    /* =========================================================
-       TASK STATISTICS
-    ========================================================= */
+    /*TASK STATISTICS*/
 
     const totalTasks = tasks.length;
 
