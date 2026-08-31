@@ -29,7 +29,7 @@ function GroupsPage({
 
                         const members = users.filter(
                             (user) =>
-                                group.userIds?.includes(
+                                group.memberIds?.includes(
                                     user.id
                                 )
                         );
@@ -67,7 +67,7 @@ function GroupsPage({
                                                 key={user.id}
                                                 className="assignee-chip"
                                             >
-                                                @{user.username}
+                                                @{user.name}
                                             </span>
                                         )
                                     )}
