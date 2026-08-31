@@ -1,215 +1,50 @@
 import {
-    useEffect,
     useState,
 } from "react";
 
 import Navbar from "../components/Navbar";
+
 import editIcon from "../assets/icons/edit.png";
 import deleteIcon from "../assets/icons/delete.png";
 
 
-function Team({ tasks = [] }) {
+function Team({
+    tasks = [],
+    users = [],
+    setUsers,
+    addUser,
+    updateUser,
+    removeUser,
+}) {
 
     /* =========================================================
-       GET SAVED MEMBER PROFILES
+       CURRENT USER / ROLE
     ========================================================= */
 
-    const getSavedMembers = () => {
+    const currentUserRole =
+        sessionStorage.getItem("collabboardRole");
 
-        const savedMembers =
-            localStorage.getItem(
-                "collabboardTeamMembers"
-            );
-
-        if (savedMembers) {
-
-            try {
-                return JSON.parse(savedMembers);
-            } catch {
-                return null;
-            }
-
-        }
-
-        return null;
-    };
+    const isTeamLeader =
+        currentUserRole === "Team Lead";
 
 
     /* =========================================================
-       TEAM MEMBERS
+       MEMBERS
     ========================================================= */
 
-    const defaultMembers = [
-        {
-            id: 1,
-            name: "Member 1",
-            role: "Team Leader",
-            email: "member1@collabboard.com",
-            image: null,
-            status: "online",
-        },
-        {
-            id: 2,
-            name: "Member 2",
-            role: "Developer",
-            email: "member2@example.com",
-            status: "online",
-            image: null,
-        },
-        {
-            id: 3,
-            name: "Member 3",
-            role: "UI/UX Designer",
-            email: "member3@example.com",
-            image: null,
-            status: "online",
-        },
-        {
-            id: 4,
-            name: "Member 4",
-            role: "Developer",
-            email: "member4@example.com",
-            image: null,
-            status: "offline",
-        },
-        {
-            id: 5,
-            name: "Member 5",
-            role: "QA Engineer",
-            email: "member5@example.com",
-            image: null,
-            status: "online",
-        },
-        {
-            id: 6,
-            name: "Member 6",
-            role: "Developer",
-            email: "member6@example.com",
-            image: null,
-            status: "online",
-        },
-        {
-            id: 7,
-            name: "Member 7",
-            role: "Developer",
-            email: "member7@example.com",
-            image: null,
-            status: "online",
-        },
-    ];
-
-
-    const [members, setMembers] = useState(() => {
-
-        const savedMembers =
-            getSavedMembers();
-
-        return savedMembers || defaultMembers;
-
-    });
-
-
-    /* =========================================================
-       SAVE MEMBERS
-    ========================================================= */
-
-    useEffect(() => {
-
-        localStorage.setItem(
-            "collabboardTeamMembers",
-            JSON.stringify(members)
-        );
-
-    }, [members]);
+    const members = (users || []).map(
+        (user) => ({
+            ...user,
+            status: user.status || "online",
+        })
+    );
 
 
     /* =========================================================
        TASKS
     ========================================================= */
 
-    const [teamTasks, setTeamTasks] = useState(() => {
-
-        const savedTasks =
-            localStorage.getItem(
-                "collabboardTasks"
-            );
-
-        if (savedTasks) {
-
-            try {
-                return JSON.parse(savedTasks);
-            } catch {
-                return tasks;
-            }
-
-        }
-
-        return tasks;
-
-    });
-
-
-    /* =========================================================
-       LIVE TASK UPDATE
-    ========================================================= */
-
-    useEffect(() => {
-
-        const updateTeamTasks = () => {
-
-            const savedTasks =
-                localStorage.getItem(
-                    "collabboardTasks"
-                );
-
-            if (!savedTasks) {
-                return;
-            }
-
-            try {
-
-                setTeamTasks(
-                    JSON.parse(savedTasks)
-                );
-
-            } catch {
-                // Ignore invalid storage data
-            }
-
-        };
-
-
-        window.addEventListener(
-            "collabboardTasksUpdated",
-            updateTeamTasks
-        );
-
-
-        window.addEventListener(
-            "storage",
-            updateTeamTasks
-        );
-
-
-        updateTeamTasks();
-
-
-        return () => {
-
-            window.removeEventListener(
-                "collabboardTasksUpdated",
-                updateTeamTasks
-            );
-
-
-            window.removeEventListener(
-                "storage",
-                updateTeamTasks
-            );
-
-        };
-
-    }, []);
+    const teamTasks = tasks;
 
 
     /* =========================================================
@@ -249,7 +84,7 @@ function Team({ tasks = [] }) {
     const [newMember, setNewMember] =
         useState({
             name: "",
-            role: "Developer",
+            role: "Team Member",
             email: "",
             image: null,
         });
@@ -271,8 +106,6 @@ function Team({ tasks = [] }) {
         }
 
 
-        /* Only allow image files */
-
         if (!file.type.startsWith("image/")) {
 
             alert(
@@ -280,11 +113,8 @@ function Team({ tasks = [] }) {
             );
 
             return;
-
         }
 
-
-        /* Limit image size to 5MB */
 
         if (file.size > 5 * 1024 * 1024) {
 
@@ -293,7 +123,6 @@ function Team({ tasks = [] }) {
             );
 
             return;
-
         }
 
 
@@ -338,11 +167,20 @@ function Team({ tasks = [] }) {
        ADD / EDIT MEMBER
     ========================================================= */
 
-    const handleSaveMember = (
+    const handleSaveMember = async (
         event
     ) => {
 
         event.preventDefault();
+
+
+        if (!isTeamLeader) {
+            alert(
+                "Only the Team Leader can manage members."
+            );
+
+            return;
+        }
 
 
         if (
@@ -350,102 +188,114 @@ function Team({ tasks = [] }) {
             !newMember.email.trim()
         ) {
 
-            return;
+            alert(
+                "Please enter the member name and email."
+            );
 
+            return;
         }
 
 
-        /* =====================================================
-           EDIT EXISTING MEMBER
-        ===================================================== */
+        try {
 
-        if (editingMember) {
+            /* =================================================
+               EDIT EXISTING MEMBER
+            ================================================= */
 
-            setMembers(
-                (previousMembers) =>
+            if (editingMember) {
 
-                    previousMembers.map(
-                        (member) =>
+                const result =
+                    await updateUser(
+                        editingMember.id,
+                        {
+                            name:
+                                newMember.name.trim(),
 
-                            member.id ===
-                            editingMember.id
+                            email:
+                                newMember.email.trim(),
 
-                                ? {
-                                      ...member,
+                            role:
+                                newMember.role,
 
-                                      name:
-                                          newMember.name.trim(),
+                            image:
+                                newMember.image || null,
+                        }
+                    );
 
-                                      email:
-                                          newMember.email.trim(),
 
-                                      role:
-                                          newMember.role,
+                setUsers(
+                    (currentUsers) =>
+                        currentUsers.map(
+                            (user) =>
+                                user.id ===
+                                editingMember.id
+                                    ? {
+                                          ...user,
+                                          ...result.user,
+                                      }
+                                    : user
+                        )
+                );
 
-                                      image:
-                                          newMember.image ||
-                                          null,
-                                  }
+            }
 
-                                : member
-                    )
-            );
 
+            /* =================================================
+               ADD NEW MEMBER
+            ================================================= */
+
+            else {
+
+                const result =
+                    await addUser({
+                        name:
+                            newMember.name.trim(),
+
+                        email:
+                            newMember.email.trim(),
+
+                        role:
+                            newMember.role,
+                    });
+
+
+                setUsers(
+                    (currentUsers) => [
+                        ...currentUsers,
+                        result.user,
+                    ]
+                );
+
+            }
+
+
+            /* =================================================
+               RESET FORM
+            ================================================= */
+
+            setNewMember({
+                name: "",
+                role: "Team Member",
+                email: "",
+                image: null,
+            });
 
             setEditingMember(null);
+            setShowAddMember(false);
 
-        }
+        } catch (error) {
 
+            console.error(
+                "Member save error:",
+                error
+            );
 
-        /* =====================================================
-           ADD NEW MEMBER
-        ===================================================== */
-
-        else {
-
-            const member = {
-
-                id: Date.now(),
-
-                name:
-                    newMember.name.trim(),
-
-                role:
-                    newMember.role,
-
-                email:
-                    newMember.email.trim(),
-
-                image:
-                    newMember.image || null,
-
-                status:
-                    "online",
-
-            };
-
-
-            setMembers(
-                (previousMembers) => [
-                    ...previousMembers,
-                    member,
-                ]
+            alert(
+                error.message ||
+                "Failed to save member."
             );
 
         }
-
-
-        /* Reset form */
-
-        setNewMember({
-            name: "",
-            role: "Developer",
-            email: "",
-            image: null,
-        });
-
-
-        setShowAddMember(false);
 
     };
 
@@ -458,19 +308,24 @@ function Team({ tasks = [] }) {
         member
     ) => {
 
+        if (!isTeamLeader) {
+            return;
+        }
+
+
         setEditingMember(member);
 
 
         setNewMember({
 
             name:
-                member.name,
+                member.name || "",
 
             email:
-                member.email,
+                member.email || "",
 
             role:
-                member.role,
+                member.role || "Team Member",
 
             image:
                 member.image || null,
@@ -489,13 +344,18 @@ function Team({ tasks = [] }) {
        DELETE MEMBER
     ========================================================= */
 
-    const handleDeleteMember = (
+    const handleDeleteMember = async (
         member
     ) => {
 
+        if (!isTeamLeader) {
+            return;
+        }
+
+
         const confirmed =
             window.confirm(
-                `Are you sure you want to delete ${member.name}?`
+                `Are you sure you want to remove ${member.name}?`
             );
 
 
@@ -504,18 +364,35 @@ function Team({ tasks = [] }) {
         }
 
 
-        setMembers(
-            (previousMembers) =>
+        try {
 
-                previousMembers.filter(
-                    (currentMember) =>
-                        currentMember.id !==
-                        member.id
-                )
-        );
+            await removeUser(member.id);
 
 
-        setOpenMenuId(null);
+            setUsers(
+                (currentUsers) =>
+                    currentUsers.filter(
+                        (user) =>
+                            user.id !== member.id
+                    )
+            );
+
+
+            setOpenMenuId(null);
+
+        } catch (error) {
+
+            console.error(
+                "Failed to remove member:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Failed to remove member."
+            );
+
+        }
 
     };
 
@@ -586,8 +463,12 @@ function Team({ tasks = [] }) {
         name
     ) => {
 
+        const cleanName =
+            (name || "Member").trim();
+
+
         const words =
-            name.trim().split(" ");
+            cleanName.split(" ");
 
 
         if (words.length === 1) {
@@ -649,26 +530,36 @@ function Team({ tasks = [] }) {
                     </div>
 
 
-                    <button
-                        type="button"
-                        className="team-add-button"
-                        onClick={() => {
+                    {/* TEAM LEADER ONLY */}
 
-                            setEditingMember(null);
+                    {isTeamLeader && (
 
-                            setNewMember({
-                                name: "",
-                                role: "Developer",
-                                email: "",
-                                image: null,
-                            });
+                        <button
+                            type="button"
+                            className="team-add-button"
+                            onClick={() => {
 
-                            setShowAddMember(true);
+                                setEditingMember(
+                                    null
+                                );
 
-                        }}
-                    >
-                        + Add Member
-                    </button>
+                                setNewMember({
+                                    name: "",
+                                    role: "Team Member",
+                                    email: "",
+                                    image: null,
+                                });
+
+                                setShowAddMember(
+                                    true
+                                );
+
+                            }}
+                        >
+                            + Add Member
+                        </button>
+
+                    )}
 
                 </div>
 
@@ -728,24 +619,28 @@ function Team({ tasks = [] }) {
                         }
                     >
 
-                        <option>
+                        <option value="All Roles">
                             All Roles
                         </option>
 
-                        <option>
-                            Team Leader
+                        <option value="Team Lead">
+                            Team Lead
                         </option>
 
-                        <option>
+                        <option value="Team Member">
+                            Team Member
+                        </option>
+
+                        <option value="Developer">
                             Developer
                         </option>
 
-                        <option>
-                            UI/UX Designer
+                        <option value="Tester">
+                            Tester
                         </option>
 
-                        <option>
-                            QA Engineer
+                        <option value="UI/UX Designer">
+                            UI/UX Designer
                         </option>
 
                     </select>
@@ -787,7 +682,6 @@ function Team({ tasks = [] }) {
                                     className="team-member-card"
                                     key={member.id}
                                 >
-
 
                                     {/* MEMBER TOP */}
 
@@ -833,68 +727,93 @@ function Team({ tasks = [] }) {
 
                                         {/* MENU */}
 
-                                        <div className="team-member-menu">
+                                        {isTeamLeader && (
 
-                                            <button
-                                                type="button"
-                                                className="team-more-button"
-                                                aria-label={`More options for ${member.name}`}
-                                                onClick={() =>
-                                                    setOpenMenuId(
-                                                        openMenuId ===
-                                                            member.id
-                                                            ? null
-                                                            : member.id
-                                                    )
-                                                }
-                                            >
-                                                ⋮
-                                            </button>
+                                            <div className="team-member-menu">
 
-
-                                            {openMenuId ===
-                                                member.id && (
-
-                                                <div className="team-dropdown-menu">
- <button
-    type="button"
-    onClick={() =>
-        handleEditMember(member)
-    }
->
-    <span className="team-menu-icon">
-        <img
-            src={editIcon}
-            alt=""
-        />
-    </span>
-
-    Edit Member
-</button>
+                                                <button
+                                                    type="button"
+                                                    className="team-more-button"
+                                                    aria-label={`More options for ${member.name}`}
+                                                    onClick={() =>
+                                                        setOpenMenuId(
+                                                            openMenuId ===
+                                                                member.id
+                                                                ? null
+                                                                : member.id
+                                                        )
+                                                    }
+                                                >
+                                                    ⋮
+                                                </button>
 
 
-<button
-    type="button"
-    className="team-delete-option"
-    onClick={() =>
-        handleDeleteMember(member)
-    }
->
-    <span className="team-menu-icon">
-        <img
-            src={deleteIcon}
-            alt=""
-        />
-    </span>
+                                                {openMenuId ===
+                                                    member.id && (
 
-    Delete Member
-</button>                             
+                                                    <div className="team-dropdown-menu">
 
-                                                </div>
+                                                        {/* EDIT */}
 
-                                            )}
+                                                        <button
+                                                            type="button"
+                                                            onClick={() =>
+                                                                handleEditMember(
+                                                                    member
+                                                                )
+                                                            }
+                                                        >
 
-                                        </div>
+                                                            <span className="team-menu-icon">
+
+                                                                <img
+                                                                    src={
+                                                                        editIcon
+                                                                    }
+                                                                    alt=""
+                                                                />
+
+                                                            </span>
+
+                                                            Edit Member
+
+                                                        </button>
+
+
+                                                        {/* DELETE */}
+
+                                                        <button
+                                                            type="button"
+                                                            className="team-delete-option"
+                                                            onClick={() =>
+                                                                handleDeleteMember(
+                                                                    member
+                                                                )
+                                                            }
+                                                        >
+
+                                                            <span className="team-menu-icon">
+
+                                                                <img
+                                                                    src={
+                                                                        deleteIcon
+                                                                    }
+                                                                    alt=""
+                                                                />
+
+                                                            </span>
+
+                                                            Remove Member
+
+                                                        </button>
+
+                                                    </div>
+
+                                                )}
+
+                                            </div>
+
+                                        )}
 
                                     </div>
 
@@ -1143,374 +1062,58 @@ function Team({ tasks = [] }) {
                     ADD / EDIT MEMBER MODAL
                 ================================================= */}
 
-                {showAddMember && (
+                {showAddMember &&
+                    isTeamLeader && (
 
-                    <div
-                        className="team-modal-overlay"
-                        onClick={(event) => {
+                        <div
+                            className="team-modal-overlay"
+                            onClick={(event) => {
 
-                            if (
-                                event.target ===
-                                event.currentTarget
-                            ) {
+                                if (
+                                    event.target ===
+                                    event.currentTarget
+                                ) {
 
-                                setShowAddMember(false);
+                                    setShowAddMember(
+                                        false
+                                    );
 
-                                setEditingMember(null);
+                                    setEditingMember(
+                                        null
+                                    );
 
-                            }
-
-                        }}
-                    >
-
-                        <div className="team-modal">
-
-
-                            {/* MODAL HEADER */}
-
-                            <div className="team-modal-header">
-
-                                <div>
-
-                                    <span>
-                                        TEAM
-                                    </span>
-
-                                    <h2>
-                                        {
-                                            editingMember
-                                                ? "Edit Member"
-                                                : "Add Member"
-                                        }
-                                    </h2>
-
-                                </div>
-
-
-                                <button
-                                    type="button"
-                                    className="team-modal-close"
-                                    onClick={() => {
-
-                                        setShowAddMember(
-                                            false
-                                        );
-
-                                        setEditingMember(
-                                            null
-                                        );
-
-                                    }}
-                                >
-                                    ×
-                                </button>
-
-                            </div>
-
-
-                            {/* FORM */}
-
-                            <form
-                                onSubmit={
-                                    handleSaveMember
                                 }
-                            >
+
+                            }}
+                        >
+
+                            <div className="team-modal">
 
 
-                                {/* =================================================
-                                    PROFILE PHOTO
-                                ================================================= */}
+                                {/* MODAL HEADER */}
 
-                                <div className="team-form-group">
+                                <div className="team-modal-header">
 
-                                    <label>
-                                        Profile Photo
-                                    </label>
+                                    <div>
 
+                                        <span>
+                                            TEAM
+                                        </span>
 
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: "16px",
-                                            marginTop: "8px",
-                                        }}
-                                    >
-
-                                        {/* PREVIEW */}
-
-                                        <div
-                                            style={{
-                                                width: "70px",
-                                                height: "70px",
-                                                borderRadius: "50%",
-                                                overflow: "hidden",
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                background:
-                                                    "#e5e7eb",
-                                                border:
-                                                    "3px solid #ffffff",
-                                                boxShadow:
-                                                    "0 2px 8px rgba(0,0,0,0.12)",
-                                                flexShrink: 0,
-                                                fontSize: "22px",
-                                                fontWeight: "700",
-                                                color:
-                                                    "#3e4656",
-                                            }}
-                                        >
-
-                                            {newMember.image ? (
-
-                                                <img
-                                                    src={
-                                                        newMember.image
-                                                    }
-                                                    alt="Profile preview"
-                                                    style={{
-                                                        width:
-                                                            "100%",
-                                                        height:
-                                                            "100%",
-                                                        objectFit:
-                                                            "cover",
-                                                    }}
-                                                />
-
-                                            ) : (
-
-                                                getInitials(
-                                                    newMember.name ||
-                                                    "Member"
-                                                )
-
-                                            )}
-
-                                        </div>
-
-
-                                        {/* PHOTO BUTTONS */}
-
-                                        <div>
-
-                                            <label
-                                                htmlFor="team-profile-photo"
-                                                style={{
-                                                    display:
-                                                        "inline-flex",
-                                                    alignItems:
-                                                        "center",
-                                                    justifyContent:
-                                                        "center",
-                                                    padding:
-                                                        "9px 15px",
-                                                    borderRadius:
-                                                        "8px",
-                                                    background:
-                                                        "#2563eb",
-                                                    color:
-                                                        "#ffffff",
-                                                    fontSize:
-                                                        "14px",
-                                                    fontWeight:
-                                                        "600",
-                                                    cursor:
-                                                        "pointer",
-                                                }}
-                                            >
-                                                {newMember.image
-                                                    ? "Change Photo"
-                                                    : "Choose Photo"}
-                                            </label>
-
-
-                                            <input
-                                                id="team-profile-photo"
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={
-                                                    handleProfilePhotoChange
-                                                }
-                                                style={{
-                                                    display:
-                                                        "none",
-                                                }}
-                                            />
-
-
-                                            {newMember.image && (
-
-                                                <button
-                                                    type="button"
-                                                    onClick={
-                                                        handleRemoveProfilePhoto
-                                                    }
-                                                    style={{
-                                                        marginLeft:
-                                                            "8px",
-                                                        padding:
-                                                            "9px 12px",
-                                                        borderRadius:
-                                                            "8px",
-                                                        border:
-                                                            "1px solid #d1d5db",
-                                                        background:
-                                                            "#ffffff",
-                                                        color:
-                                                            "#374151",
-                                                        fontSize:
-                                                            "14px",
-                                                        cursor:
-                                                            "pointer",
-                                                    }}
-                                                >
-                                                    Remove
-                                                </button>
-
-                                            )}
-
-
-                                            <p
-                                                style={{
-                                                    margin:
-                                                        "8px 0 0",
-                                                    fontSize:
-                                                        "12px",
-                                                    color:
-                                                        "#6b7280",
-                                                }}
-                                            >
-                                                JPG, PNG or WEBP.
-                                                Maximum 5MB.
-                                            </p>
-
-                                        </div>
+                                        <h2>
+                                            {
+                                                editingMember
+                                                    ? "Edit Member"
+                                                    : "Add Member"
+                                            }
+                                        </h2>
 
                                     </div>
 
-                                </div>
-
-
-                                {/* =================================================
-                                    NAME
-                                ================================================= */}
-
-                                <div className="team-form-group">
-
-                                    <label>
-                                        Member Name
-                                    </label>
-
-
-                                    <input
-                                        type="text"
-                                        placeholder="Enter member name"
-                                        value={
-                                            newMember.name
-                                        }
-                                        onChange={(event) =>
-                                            setNewMember({
-                                                ...newMember,
-                                                name:
-                                                    event
-                                                        .target
-                                                        .value,
-                                            })
-                                        }
-                                    />
-
-                                </div>
-
-
-                                {/* =================================================
-                                    EMAIL
-                                ================================================= */}
-
-                                <div className="team-form-group">
-
-                                    <label>
-                                        Email
-                                    </label>
-
-
-                                    <input
-                                        type="email"
-                                        placeholder="Enter email address"
-                                        value={
-                                            newMember.email
-                                        }
-                                        onChange={(event) =>
-                                            setNewMember({
-                                                ...newMember,
-                                                email:
-                                                    event
-                                                        .target
-                                                        .value,
-                                            })
-                                        }
-                                    />
-
-                                </div>
-
-
-                                {/* =================================================
-                                    ROLE
-                                ================================================= */}
-
-                                <div className="team-form-group">
-
-                                    <label>
-                                        Role
-                                    </label>
-
-
-                                    <select
-                                        value={
-                                            newMember.role
-                                        }
-                                        onChange={(event) =>
-                                            setNewMember({
-                                                ...newMember,
-                                                role:
-                                                    event
-                                                        .target
-                                                        .value,
-                                            })
-                                        }
-                                    >
-
-                                        <option>
-                                            Developer
-                                        </option>
-
-                                        <option>
-                                            UI/UX Designer
-                                        </option>
-
-                                        <option>
-                                            QA Engineer
-                                        </option>
-
-                                        <option>
-                                            Team Leader
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-
-                                {/* =================================================
-                                    MODAL BUTTONS
-                                ================================================= */}
-
-                                <div className="team-modal-actions">
 
                                     <button
                                         type="button"
-                                        className="team-cancel-button"
+                                        className="team-modal-close"
                                         onClick={() => {
 
                                             setShowAddMember(
@@ -1523,30 +1126,341 @@ function Team({ tasks = [] }) {
 
                                         }}
                                     >
-                                        Cancel
-                                    </button>
-
-
-                                    <button
-                                        type="submit"
-                                        className="team-save-button"
-                                    >
-                                        {
-                                            editingMember
-                                                ? "Save Changes"
-                                                : "Add Member"
-                                        }
+                                        ×
                                     </button>
 
                                 </div>
 
-                            </form>
+
+                                {/* FORM */}
+
+                                <form
+                                    onSubmit={
+                                        handleSaveMember
+                                    }
+                                >
+
+
+                                    {/* PROFILE PHOTO */}
+
+                                    <div className="team-form-group">
+
+                                        <label>
+                                            Profile Photo
+                                        </label>
+
+
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "16px",
+                                                marginTop: "8px",
+                                            }}
+                                        >
+
+                                            <div
+                                                style={{
+                                                    width: "70px",
+                                                    height: "70px",
+                                                    borderRadius: "50%",
+                                                    overflow: "hidden",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    background:
+                                                        "#e5e7eb",
+                                                    border:
+                                                        "3px solid #ffffff",
+                                                    boxShadow:
+                                                        "0 2px 8px rgba(0,0,0,0.12)",
+                                                    flexShrink: 0,
+                                                    fontSize: "22px",
+                                                    fontWeight: "700",
+                                                    color:
+                                                        "#3e4656",
+                                                }}
+                                            >
+
+                                                {newMember.image ? (
+
+                                                    <img
+                                                        src={
+                                                            newMember.image
+                                                        }
+                                                        alt="Profile preview"
+                                                        style={{
+                                                            width:
+                                                                "100%",
+                                                            height:
+                                                                "100%",
+                                                            objectFit:
+                                                                "cover",
+                                                        }}
+                                                    />
+
+                                                ) : (
+
+                                                    getInitials(
+                                                        newMember.name ||
+                                                        "Member"
+                                                    )
+
+                                                )}
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <label
+                                                    htmlFor="team-profile-photo"
+                                                    style={{
+                                                        display:
+                                                            "inline-flex",
+                                                        alignItems:
+                                                            "center",
+                                                        justifyContent:
+                                                            "center",
+                                                        padding:
+                                                            "9px 15px",
+                                                        borderRadius:
+                                                            "8px",
+                                                        background:
+                                                            "#2563eb",
+                                                        color:
+                                                            "#ffffff",
+                                                        fontSize:
+                                                            "14px",
+                                                        fontWeight:
+                                                            "600",
+                                                        cursor:
+                                                            "pointer",
+                                                    }}
+                                                >
+                                                    {newMember.image
+                                                        ? "Change Photo"
+                                                        : "Choose Photo"}
+                                                </label>
+
+
+                                                <input
+                                                    id="team-profile-photo"
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={
+                                                        handleProfilePhotoChange
+                                                    }
+                                                    style={{
+                                                        display:
+                                                            "none",
+                                                    }}
+                                                />
+
+
+                                                {newMember.image && (
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            handleRemoveProfilePhoto
+                                                        }
+                                                        style={{
+                                                            marginLeft:
+                                                                "8px",
+                                                            padding:
+                                                                "9px 12px",
+                                                            borderRadius:
+                                                                "8px",
+                                                            border:
+                                                                "1px solid #d1d5db",
+                                                            background:
+                                                                "#ffffff",
+                                                            color:
+                                                                "#374151",
+                                                            fontSize:
+                                                                "14px",
+                                                            cursor:
+                                                                "pointer",
+                                                        }}
+                                                    >
+                                                        Remove
+                                                    </button>
+
+                                                )}
+
+
+                                                <p
+                                                    style={{
+                                                        margin:
+                                                            "8px 0 0",
+                                                        fontSize:
+                                                            "12px",
+                                                        color:
+                                                            "#6b7280",
+                                                    }}
+                                                >
+                                                    JPG, PNG or WEBP.
+                                                    Maximum 5MB.
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {/* NAME */}
+
+                                    <div className="team-form-group">
+
+                                        <label>
+                                            Member Name
+                                        </label>
+
+
+                                        <input
+                                            type="text"
+                                            placeholder="Enter member name"
+                                            value={
+                                                newMember.name
+                                            }
+                                            onChange={(event) =>
+                                                setNewMember({
+                                                    ...newMember,
+                                                    name:
+                                                        event
+                                                            .target
+                                                            .value,
+                                                })
+                                            }
+                                        />
+
+                                    </div>
+
+
+                                    {/* EMAIL */}
+
+                                    <div className="team-form-group">
+
+                                        <label>
+                                            Email
+                                        </label>
+
+
+                                        <input
+                                            type="email"
+                                            placeholder="Enter email address"
+                                            value={
+                                                newMember.email
+                                            }
+                                            onChange={(event) =>
+                                                setNewMember({
+                                                    ...newMember,
+                                                    email:
+                                                        event
+                                                            .target
+                                                            .value,
+                                                })
+                                            }
+                                        />
+
+                                    </div>
+
+
+                                    {/* ROLE */}
+
+                                    <div className="team-form-group">
+
+                                        <label>
+                                            Role
+                                        </label>
+
+
+                                        <select
+                                            value={
+                                                newMember.role
+                                            }
+                                            onChange={(event) =>
+                                                setNewMember({
+                                                    ...newMember,
+                                                    role:
+                                                        event
+                                                            .target
+                                                            .value,
+                                                })
+                                            }
+                                        >
+
+                                            <option value="Team Member">
+                                                Team Member
+                                            </option>
+
+                                            <option value="Developer">
+                                                Developer
+                                            </option>
+
+                                            <option value="Tester">
+                                                Tester
+                                            </option>
+
+                                            <option value="UI/UX Designer">
+                                                UI/UX Designer
+                                            </option>
+
+                                            <option value="Team Lead">
+                                                Team Lead
+                                            </option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                    {/* MODAL BUTTONS */}
+
+                                    <div className="team-modal-actions">
+
+                                        <button
+                                            type="button"
+                                            className="team-cancel-button"
+                                            onClick={() => {
+
+                                                setShowAddMember(
+                                                    false
+                                                );
+
+                                                setEditingMember(
+                                                    null
+                                                );
+
+                                            }}
+                                        >
+                                            Cancel
+                                        </button>
+
+
+                                        <button
+                                            type="submit"
+                                            className="team-save-button"
+                                        >
+                                            {
+                                                editingMember
+                                                    ? "Save Changes"
+                                                    : "Add Member"
+                                            }
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
 
                         </div>
 
-                    </div>
-
-                )}
+                    )}
 
             </div>
 
