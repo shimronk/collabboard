@@ -6,6 +6,8 @@ function ProjectsPage({
     setProjects,
     selectedProjectId,
     setSelectedProjectId,
+    addProjectMember,
+    removeProjectMember,
 }) {
     const [selectedProject, setSelectedProject] =
         useState(null);
@@ -13,24 +15,21 @@ function ProjectsPage({
     const [showMembers, setShowMembers] =
         useState(false);
 
-
     /* =====================================================
        GET PROJECT MEMBERS
     ===================================================== */
 
     const getProjectMembers = (project) => {
         return users.filter((user) =>
-            project.userIds?.includes(user.id)
+            project.memberIds?.includes(user.id)
         );
     };
-
 
     /* =====================================================
        SELECT PROJECT
     ===================================================== */
 
     const handleSelectProject = (project) => {
-
         setSelectedProjectId(project.id);
 
         setSelectedProject(project);
@@ -38,118 +37,99 @@ function ProjectsPage({
         setShowMembers(true);
     };
 
-
     /* =====================================================
        ADD USER TO PROJECT
     ===================================================== */
 
-    const handleAddMember = (projectId, userId) => {
+    const handleAddMember = async (
+        projectId,
+        userId
+    ) => {
+        try {
+            const result = await addProjectMember(
+                projectId,
+                userId
+            );
 
-        setProjects((currentProjects) =>
-            currentProjects.map((project) => {
+            const updatedProject = result.project;
 
-                if (project.id !== projectId) {
-                    return project;
-                }
+            // Update all projects
+            setProjects((currentProjects) =>
+                currentProjects.map((project) =>
+                    project.id === projectId
+                        ? updatedProject
+                        : project
+                )
+            );
 
-                const currentUserIds =
-                    project.userIds || [];
+            // Update selected project
+            setSelectedProject((currentProject) =>
+                currentProject &&
+                currentProject.id === projectId
+                    ? updatedProject
+                    : currentProject
+            );
+        } catch (error) {
+            console.error(
+                "Failed to add project member:",
+                error
+            );
 
-                if (
-                    currentUserIds.includes(userId)
-                ) {
-                    return project;
-                }
-
-                return {
-                    ...project,
-
-                    userIds: [
-                        ...currentUserIds,
-                        userId,
-                    ],
-                };
-
-            })
-        );
-
-
-        /* Update selected project immediately */
-
-        setSelectedProject((currentProject) => {
-
-            if (
-                !currentProject ||
-                currentProject.id !== projectId
-            ) {
-                return currentProject;
-            }
-
-            return {
-                ...currentProject,
-
-                userIds: [
-                    ...(currentProject.userIds || []),
-                    userId,
-                ],
-            };
-
-        });
+            alert(
+                error.message ||
+                "Failed to add project member."
+            );
+        }
     };
-
 
     /* =====================================================
        REMOVE USER FROM PROJECT
     ===================================================== */
 
-    const handleRemoveMember = (
+    const handleRemoveMember = async (
         projectId,
         userId
     ) => {
+        try {
+            const result = await removeProjectMember(
+                projectId,
+                userId
+            );
 
-        setProjects((currentProjects) =>
-            currentProjects.map((project) => {
+            const updatedProject = result.project;
 
-                if (project.id !== projectId) {
-                    return project;
-                }
+            // Update all projects
+            setProjects((currentProjects) =>
+                currentProjects.map((project) =>
+                    project.id === projectId
+                        ? updatedProject
+                        : project
+                )
+            );
 
-                return {
-                    ...project,
+            // Update selected project
+            setSelectedProject((currentProject) =>
+                currentProject &&
+                currentProject.id === projectId
+                    ? updatedProject
+                    : currentProject
+            );
+        } catch (error) {
+            console.error(
+                "Failed to remove project member:",
+                error
+            );
 
-                    userIds: (
-                        project.userIds || []
-                    ).filter(
-                        (id) => id !== userId
-                    ),
-                };
-
-            })
-        );
-
-
-        setSelectedProject((currentProject) => {
-
-            if (
-                !currentProject ||
-                currentProject.id !== projectId
-            ) {
-                return currentProject;
-            }
-
-            return {
-                ...currentProject,
-
-                userIds: (
-                    currentProject.userIds || []
-                ).filter(
-                    (id) => id !== userId
-                ),
-            };
-
-        });
+            alert(
+                error.message ||
+                "Failed to remove project member."
+            );
+        }
     };
 
+    /* =====================================================
+       PAGE
+    ===================================================== */
 
     return (
         <div className="app">
@@ -190,9 +170,7 @@ function ProjectsPage({
                     {projects.map((project) => {
 
                         const projectMembers =
-                            getProjectMembers(
-                                project
-                            );
+                            getProjectMembers(project);
 
                         const isSelected =
                             selectedProjectId ===
@@ -246,7 +224,7 @@ function ProjectsPage({
                                                 key={user.id}
                                                 className="assignee-chip"
                                             >
-                                                @{user.username}
+                                                @{user.name}
                                             </span>
 
                                         )
@@ -335,7 +313,7 @@ function ProjectsPage({
                                 {users.map((user) => {
 
                                     const isMember =
-                                        selectedProject.userIds?.includes(
+                                        selectedProject.memberIds?.includes(
                                             user.id
                                         );
 
@@ -349,7 +327,7 @@ function ProjectsPage({
                                             <div>
 
                                                 <strong>
-                                                    @{user.username}
+                                                    @{user.name}
                                                 </strong>
 
                                                 <span>
