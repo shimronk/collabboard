@@ -4,6 +4,13 @@ import Navbar from "../components/Navbar";
 import hideIcon from "../assets/icons/hide.png";
 import visibleIcon from "../assets/icons/visible.png";
 
+import {
+    getCurrentUser,
+    updateCurrentUser,
+    changePassword,
+    deleteCurrentUser,
+} from "../api/userApi";
+
 const roleOptions = [
     "Team Member",
     "Team Lead",
@@ -11,65 +18,6 @@ const roleOptions = [
     "Tester",
     "UI/UX Designer",
 ];
-
-/* =========================================================
-   GET CURRENT LOGGED-IN EMAIL
-========================================================= */
-
-function getLoggedInEmail() {
-    return (
-        sessionStorage.getItem("collabboardEmail") ||
-        "member1@collabboard.com"
-    );
-}
-
-
-/* =========================================================
-   PROFILE STORAGE KEY
-========================================================= */
-
-function getProfileStorageKey() {
-    const email = getLoggedInEmail();
-
-    return `collabboardProfile_${email.toLowerCase().trim()}`;
-}
-
-
-/* =========================================================
-   INITIAL PROFILE
-========================================================= */
-
-function getInitialProfile() {
-    const storageKey = getProfileStorageKey();
-
-    const savedProfile = localStorage.getItem(storageKey);
-
-    if (savedProfile) {
-        try {
-            return JSON.parse(savedProfile);
-        } catch {
-            // Continue with default profile
-        }
-    }
-
-    const loggedInEmail = getLoggedInEmail();
-
-    return {
-        name:
-            loggedInEmail === "shimron@example.com"
-                ? "Shimron"
-                : "Member 1",
-
-        email: loggedInEmail,
-
-        role:
-            loggedInEmail === "shimron@example.com"
-                ? "Team Lead"
-                : "Team Member",
-
-        image: null,
-    };
-}
 
 
 /* =========================================================
@@ -82,25 +30,34 @@ function ProfilePage() {
 
     const roleDropdownRef = useRef(null);
 
-    const [profile, setProfile] = useState(
-        getInitialProfile
-    );
+    /* =========================================================
+       PROFILE STATE
+    ========================================================= */
 
-    const [draftName, setDraftName] = useState(
-        profile.name
-    );
+    const [profile, setProfile] = useState(null);
 
-    const [draftEmail, setDraftEmail] = useState(
-        profile.email
-    );
+    const [draftName, setDraftName] =
+        useState("");
 
-    const [draftRole, setDraftRole] = useState(
-        profile.role
-    );
+    const [draftEmail, setDraftEmail] =
+        useState("");
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [draftRole, setDraftRole] =
+        useState("");
 
-    const [isRoleOpen, setIsRoleOpen] = useState(false);
+    const [isLoading, setIsLoading] =
+        useState(true);
+
+    const [isEditing, setIsEditing] =
+        useState(false);
+
+    const [isRoleOpen, setIsRoleOpen] =
+        useState(false);
+
+
+    /* =========================================================
+       PASSWORD STATE
+    ========================================================= */
 
     const [showPasswordForm, setShowPasswordForm] =
         useState(false);
@@ -125,6 +82,77 @@ function ProfilePage() {
 
 
     /* =========================================================
+       LOAD CURRENT USER FROM BACKEND
+    ========================================================= */
+
+    useEffect(() => {
+
+        const loadProfile = async () => {
+
+            try {
+
+                setIsLoading(true);
+
+                const currentUser =
+                    await getCurrentUser();
+
+                setProfile(currentUser);
+
+                setDraftName(
+                    currentUser.name || ""
+                );
+
+                setDraftEmail(
+                    currentUser.email || ""
+                );
+
+                setDraftRole(
+                    currentUser.role || "Team Member"
+                );
+
+                /* Keep session data synchronized */
+
+                sessionStorage.setItem(
+                    "collabboardEmail",
+                    currentUser.email
+                );
+
+                sessionStorage.setItem(
+                    "collabboardUserId",
+                    String(currentUser.id)
+                );
+
+                sessionStorage.setItem(
+                    "collabboardRole",
+                    currentUser.role
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load profile:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Failed to load your profile."
+                );
+
+            } finally {
+
+                setIsLoading(false);
+
+            }
+
+        };
+
+        loadProfile();
+
+    }, []);
+
+
+    /* =========================================================
        CLOSE ROLE DROPDOWN
     ========================================================= */
 
@@ -134,9 +162,13 @@ function ProfilePage() {
 
             if (
                 roleDropdownRef.current &&
-                !roleDropdownRef.current.contains(event.target)
+                !roleDropdownRef.current.contains(
+                    event.target
+                )
             ) {
+
                 setIsRoleOpen(false);
+
             }
 
         };
@@ -159,31 +191,6 @@ function ProfilePage() {
 
 
     /* =========================================================
-   SAVE PROFILE
-========================================================= */
-
-const saveProfileToStorage = (updatedProfile) => {
-    const storageKey = getProfileStorageKey();
-
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(updatedProfile)
-    );
-
-    localStorage.setItem(
-        `collabboardProfile_${updatedProfile.email
-            .toLowerCase()
-            .trim()}`,
-        JSON.stringify(updatedProfile)
-    );
-
-    window.dispatchEvent(
-        new Event("collabboardProfileUpdated")
-    );
-};
-
-
-    /* =========================================================
        CHANGE PROFILE PHOTO
     ========================================================= */
 
@@ -196,28 +203,69 @@ const saveProfileToStorage = (updatedProfile) => {
             return;
         }
 
+        if (!file.type.startsWith("image/")) {
+
+            alert(
+                "Please select an image file."
+            );
+
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+
+            alert(
+                "Profile photo must be smaller than 5MB."
+            );
+
+            return;
+        }
+
         const reader =
             new FileReader();
 
-        reader.onload = () => {
+        reader.onload = async () => {
 
-            const updatedProfile = {
+            try {
 
-                ...profile,
+                const result =
+                    await updateCurrentUser({
+                        image: reader.result,
+                    });
 
-                image: reader.result,
+                setProfile(
+                    result.user
+                );
 
-            };
+                setDraftName(
+                    result.user.name || ""
+                );
 
-            setProfile(
-                updatedProfile
-            );
+                setDraftEmail(
+                    result.user.email || ""
+                );
 
-            saveProfileToStorage(
-                updatedProfile
-            );
+                setDraftRole(
+                    result.user.role || "Team Member"
+                );
 
-  
+                alert(
+                    "Profile photo updated successfully."
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to update profile photo:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Failed to update profile photo."
+                );
+
+            }
 
         };
 
@@ -232,16 +280,20 @@ const saveProfileToStorage = (updatedProfile) => {
 
     const handleEditProfile = () => {
 
+        if (!profile) {
+            return;
+        }
+
         setDraftName(
-            profile.name
+            profile.name || ""
         );
 
         setDraftEmail(
-            profile.email
+            profile.email || ""
         );
 
         setDraftRole(
-            profile.role
+            profile.role || "Team Member"
         );
 
         setIsEditing(true);
@@ -253,7 +305,11 @@ const saveProfileToStorage = (updatedProfile) => {
        SAVE PROFILE CHANGES
     ========================================================= */
 
-    const handleSaveProfile = () => {
+    const handleSaveProfile = async () => {
+
+        if (!profile) {
+            return;
+        }
 
         if (!draftName.trim()) {
 
@@ -273,72 +329,76 @@ const saveProfileToStorage = (updatedProfile) => {
             return;
         }
 
-        const oldStorageKey =
-            getProfileStorageKey();
+        try {
 
-        const updatedProfile = {
+            const result =
+                await updateCurrentUser({
+                    name:
+                        draftName.trim(),
 
-            ...profile,
+                    email:
+                        draftEmail
+                            .trim()
+                            .toLowerCase(),
+                });
 
-            name:
-                draftName.trim(),
+            const updatedProfile =
+                result.user;
 
-            email:
-                draftEmail.trim(),
+            setProfile(
+                updatedProfile
+            );
 
-            role:
-                draftRole,
+            setDraftName(
+                updatedProfile.name || ""
+            );
 
-        };
+            setDraftEmail(
+                updatedProfile.email || ""
+            );
 
+            setDraftRole(
+                updatedProfile.role || "Team Member"
+            );
 
-        /*
-           If the email was changed,
-           remove the old profile key.
-        */
+            /* Update session information */
 
-        if (
-            profile.email
-                .toLowerCase()
-                .trim() !==
-            updatedProfile.email
-                .toLowerCase()
-                .trim()
-        ) {
+            sessionStorage.setItem(
+                "collabboardEmail",
+                updatedProfile.email
+            );
 
-            localStorage.removeItem(
-                oldStorageKey
+            sessionStorage.setItem(
+                "collabboardUserId",
+                String(updatedProfile.id)
+            );
+
+            sessionStorage.setItem(
+                "collabboardRole",
+                updatedProfile.role
+            );
+
+            setIsRoleOpen(false);
+
+            setIsEditing(false);
+
+            alert(
+                "Profile updated successfully."
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Failed to update profile:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Failed to update your profile."
             );
 
         }
-
-
-        setProfile(
-            updatedProfile
-        );
-
-        saveProfileToStorage(
-            updatedProfile
-        );
-
-
-        setIsRoleOpen(false);
-
-        setIsEditing(false);
-
-
-        /*
-           Notify TeamPage.
-        */
-
-        window.dispatchEvent(
-            new Event("profileUpdated")
-        );
-
-
-        alert(
-            "Profile updated successfully."
-        );
 
     };
 
@@ -349,16 +409,20 @@ const saveProfileToStorage = (updatedProfile) => {
 
     const handleCancelEdit = () => {
 
+        if (!profile) {
+            return;
+        }
+
         setDraftName(
-            profile.name
+            profile.name || ""
         );
 
         setDraftEmail(
-            profile.email
+            profile.email || ""
         );
 
         setDraftRole(
-            profile.role
+            profile.role || "Team Member"
         );
 
         setIsRoleOpen(false);
@@ -370,11 +434,21 @@ const saveProfileToStorage = (updatedProfile) => {
 
     /* =========================================================
        SELECT ROLE
+       
+       ROLE CHANGE IS DISABLED FOR NORMAL PROFILE EDITING.
+       Team Leader can change member roles from Team page.
     ========================================================= */
 
     const handleRoleSelect = (
         role
     ) => {
+
+        /*
+           Intentionally left here so the existing UI structure
+           is not broken.
+
+           A user must not be able to change their own role.
+        */
 
         setDraftRole(role);
 
@@ -400,49 +474,55 @@ const saveProfileToStorage = (updatedProfile) => {
 
     /* =========================================================
        CHANGE PASSWORD
+       
+       Backend password API is not connected yet.
     ========================================================= */
 
-    const handleChangePassword = (
-        event
-    ) => {
+    const handleChangePassword = async (
+    event
+) => {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        if (
-            !currentPassword ||
-            !newPassword ||
-            !confirmPassword
-        ) {
+    if (
+        !currentPassword ||
+        !newPassword ||
+        !confirmPassword
+    ) {
+        alert(
+            "Please complete all password fields."
+        );
 
-            alert(
-                "Please complete all password fields."
-            );
+        return;
+    }
 
-            return;
-        }
+    if (
+        newPassword.length < 6
+    ) {
+        alert(
+            "New password must contain at least 6 characters."
+        );
 
-        if (
-            newPassword.length < 6
-        ) {
+        return;
+    }
 
-            alert(
-                "New password must contain at least 6 characters."
-            );
+    if (
+        newPassword !==
+        confirmPassword
+    ) {
+        alert(
+            "New passwords do not match."
+        );
 
-            return;
-        }
+        return;
+    }
 
-        if (
-            newPassword !==
-            confirmPassword
-        ) {
+    try {
 
-            alert(
-                "New passwords do not match."
-            );
-
-            return;
-        }
+        await changePassword(
+            currentPassword,
+            newPassword
+        );
 
         alert(
             "Password changed successfully."
@@ -458,7 +538,19 @@ const saveProfileToStorage = (updatedProfile) => {
 
         setShowPasswordForm(false);
 
-    };
+    } catch (error) {
+
+        console.error(
+            "Failed to change password:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to change password."
+        );
+    }
+};
 
 
     /* =========================================================
@@ -503,6 +595,18 @@ const saveProfileToStorage = (updatedProfile) => {
             "collabboardEmail"
         );
 
+        sessionStorage.removeItem(
+            "collabboardToken"
+        );
+
+        sessionStorage.removeItem(
+            "collabboardUserId"
+        );
+
+        sessionStorage.removeItem(
+            "collabboardRole"
+        );
+
         navigate("/");
 
     };
@@ -510,25 +614,24 @@ const saveProfileToStorage = (updatedProfile) => {
 
     /* =========================================================
        DELETE ACCOUNT
+       
+       Backend delete-account API is not connected yet.
     ========================================================= */
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
 
-        const confirmed =
-            window.confirm(
-                "Are you sure you want to delete your account? This action cannot be undone."
-            );
-
-        if (!confirmed) {
-            return;
-        }
-
-        const storageKey =
-            getProfileStorageKey();
-
-        localStorage.removeItem(
-            storageKey
+    const confirmed =
+        window.confirm(
+            "Are you sure you want to delete your account? This action cannot be undone."
         );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        await deleteCurrentUser();
 
         sessionStorage.removeItem(
             "collabboardLoggedIn"
@@ -538,13 +641,133 @@ const saveProfileToStorage = (updatedProfile) => {
             "collabboardEmail"
         );
 
+        sessionStorage.removeItem(
+            "collabboardToken"
+        );
+
+        sessionStorage.removeItem(
+            "collabboardUserId"
+        );
+
+        sessionStorage.removeItem(
+            "collabboardRole"
+        );
+
         alert(
             "Account deleted successfully."
         );
 
         navigate("/");
 
-    };
+    } catch (error) {
+
+        console.error(
+            "Failed to delete account:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Failed to delete account."
+        );
+    }
+};
+
+
+    /* =========================================================
+       LOADING STATE
+    ========================================================= */
+
+    if (isLoading) {
+
+        return (
+
+            <div className="app">
+
+                <Navbar />
+
+                <main className="profile-page">
+
+                    <div className="profile-page-header">
+
+                        <div>
+
+                            <p className="page-label">
+                                ACCOUNT
+                            </p>
+
+                            <h1>
+                                Profile
+                            </h1>
+
+                            <p className="page-subtitle">
+                                Loading your profile...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </div>
+
+        );
+
+    }
+
+
+    /* =========================================================
+       ERROR / NO PROFILE
+    ========================================================= */
+
+    if (!profile) {
+
+        return (
+
+            <div className="app">
+
+                <Navbar />
+
+                <main className="profile-page">
+
+                    <div className="profile-page-header">
+
+                        <div>
+
+                            <p className="page-label">
+                                ACCOUNT
+                            </p>
+
+                            <h1>
+                                Profile
+                            </h1>
+
+                            <p className="page-subtitle">
+                                Unable to load your profile.
+                            </p>
+
+                            <button
+                                type="button"
+                                className="profile-primary-button"
+                                onClick={() =>
+                                    window.location.reload()
+                                }
+                            >
+                                Try Again
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </main>
+
+            </div>
+
+        );
+
+    }
 
 
     /* =========================================================
@@ -621,7 +844,9 @@ const saveProfileToStorage = (updatedProfile) => {
                                 <input
                                     type="file"
                                     accept="image/*"
-                                    onChange={handleImageChange}
+                                    onChange={
+                                        handleImageChange
+                                    }
                                     hidden
                                 />
 
@@ -667,7 +892,7 @@ const saveProfileToStorage = (updatedProfile) => {
                                     </h2>
 
                                     <p>
-                                        Update your name, email and role.
+                                        Update your name and email.
                                     </p>
 
                                 </div>
@@ -678,7 +903,9 @@ const saveProfileToStorage = (updatedProfile) => {
                                     <button
                                         type="button"
                                         className="profile-secondary-button"
-                                        onClick={handleEditProfile}
+                                        onClick={
+                                            handleEditProfile
+                                        }
                                     >
                                         Edit Profile
                                     </button>
@@ -690,6 +917,8 @@ const saveProfileToStorage = (updatedProfile) => {
 
                             <div className="profile-form">
 
+
+                                {/* NAME */}
 
                                 <div className="profile-form-group">
 
@@ -716,6 +945,8 @@ const saveProfileToStorage = (updatedProfile) => {
                                 </div>
 
 
+                                {/* EMAIL */}
+
                                 <div className="profile-form-group">
 
                                     <label htmlFor="profile-email">
@@ -741,6 +972,8 @@ const saveProfileToStorage = (updatedProfile) => {
                                 </div>
 
 
+                                {/* ROLE */}
+
                                 <div
                                     className="profile-form-group profile-role-group"
                                     ref={roleDropdownRef}
@@ -750,91 +983,21 @@ const saveProfileToStorage = (updatedProfile) => {
                                         Role
                                     </label>
 
+                                    {/* Role is displayed only.
+                                        Users cannot change their own role. */}
 
-                                    {isEditing ? (
-
-                                        <div className="profile-role-selector">
-
-                                            <button
-                                                type="button"
-                                                className={`profile-role-select-button ${
-                                                    isRoleOpen
-                                                        ? "profile-role-select-open"
-                                                        : ""
-                                                }`}
-                                                onClick={() =>
-                                                    setIsRoleOpen(
-                                                        (current) =>
-                                                            !current
-                                                    )
-                                                }
-                                            >
-
-                                                <span>
-                                                    {draftRole}
-                                                </span>
-
-                                                <span
-                                                    className={`profile-role-arrow ${
-                                                        isRoleOpen
-                                                            ? "profile-role-arrow-open"
-                                                            : ""
-                                                    }`}
-                                                >
-                                                    ▼
-                                                </span>
-
-                                            </button>
-
-
-                                            {isRoleOpen && (
-
-                                                <div className="profile-role-options">
-
-                                                    {roleOptions.map(
-                                                        (role) => (
-
-                                                            <button
-                                                                key={role}
-                                                                type="button"
-                                                                className={`profile-role-option ${
-                                                                    draftRole ===
-                                                                    role
-                                                                        ? "profile-role-option-active"
-                                                                        : ""
-                                                                }`}
-                                                                onClick={() =>
-                                                                    handleRoleSelect(
-                                                                        role
-                                                                    )
-                                                                }
-                                                            >
-                                                                {role}
-                                                            </button>
-
-                                                        )
-                                                    )}
-
-                                                </div>
-
-                                            )}
-
-                                        </div>
-
-                                    ) : (
-
-                                        <input
-                                            type="text"
-                                            value={
-                                                profile.role
-                                            }
-                                            disabled
-                                        />
-
-                                    )}
+                                    <input
+                                        type="text"
+                                        value={
+                                            profile.role
+                                        }
+                                        disabled
+                                    />
 
                                 </div>
 
+
+                                {/* EDIT ACTIONS */}
 
                                 {isEditing && (
 
@@ -981,7 +1144,6 @@ const saveProfileToStorage = (updatedProfile) => {
 
 
                                     <div className="profile-password-row">
-
 
                                         <div className="profile-form-group">
 
@@ -1160,7 +1322,9 @@ const saveProfileToStorage = (updatedProfile) => {
                                 <button
                                     type="button"
                                     className="logout-button"
-                                    onClick={handleLogout}
+                                    onClick={
+                                        handleLogout
+                                    }
                                 >
                                     Logout
                                 </button>
