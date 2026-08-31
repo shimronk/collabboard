@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import hideIcon from "../assets/icons/hide.png";
 import visibleIcon from "../assets/icons/visible.png";
+import { loginUser } from "../api/authApi";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -10,31 +11,67 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-        if (!email.trim()) {
-            alert("Please enter your email.");
-            return;
-        }
+    const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        if (!password.trim()) {
-            alert("Please enter your password.");
-            return;
-        }
+    if (!email.trim()) {
+        alert("Please enter your email.");
+        return;
+    }
+
+    if (!password.trim()) {
+        alert("Please enter your password.");
+        return;
+    }
+
+    try {
+        const result = await loginUser(
+            email.trim(),
+            password
+        );
+
+        sessionStorage.setItem(
+            "collabboardToken",
+            result.token
+        );
+
+        sessionStorage.setItem(
+            "collabboardEmail",
+            result.user.email
+        );
+
+        sessionStorage.setItem(
+            "collabboardUserId",
+            String(result.user.id)
+        );
+
+        sessionStorage.setItem(
+            "collabboardRole",
+            result.user.role
+        );
 
         sessionStorage.setItem(
             "collabboardLoggedIn",
             "true"
         );
 
-        sessionStorage.setItem(
-            "collabboardEmail",
-            email.trim()
+        navigate("/board");
+
+    } catch (error) {
+        console.error(
+            "Login error:",
+            error
         );
 
-        navigate("/board");
-    };
+        alert(
+            error.message ||
+            "Invalid email or password."
+        );
+    }
+};
 
     return (
         <div className="auth-page">
@@ -133,11 +170,21 @@ function LoginPage() {
                         </div>
                     </div>
 
+                    {error && (
+                        <p
+                            className="auth-error-message"
+                            role="alert"
+                        >
+                            {error}
+                        </p>
+                    )}
+
                     <button
                         type="submit"
                         className="auth-primary-button"
+                        disabled={loading}
                     >
-                        Login
+                        {loading ? "Logging in..." : "Login"}
                     </button>
                 </form>
 
